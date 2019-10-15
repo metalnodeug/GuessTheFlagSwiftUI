@@ -75,6 +75,14 @@ struct ContentView: View {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
         self.questionNumber += 1
+        resetingGame()
+    }
+
+    func resetingGame() {
+        if self.questionNumber == 11 {
+            self.questionNumber = 0
+            self.score = 0
+        }
     }
 
 }
