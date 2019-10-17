@@ -20,8 +20,8 @@ struct ContentView: View {
     func ImageFlag(content: Image) -> some View {
         content
             .renderingMode(.original)
-            .clipShape(Capsule())
-            .overlay(Capsule().stroke(Color.black, lineWidth: 1))
+            .clipShape(RoundedRectangle(cornerRadius: 3))
+            .overlay(RoundedRectangle(cornerRadius: 3).stroke(Color.black, lineWidth: 0.5))
             .shadow(color: .black, radius: 2)
     }
     
@@ -52,7 +52,7 @@ struct ContentView: View {
                 
                 Text("Question number \(questionNumber) / 10")
                     .foregroundColor(.white)
-                    .fontWeight(.semibold)
+                    .fontWeight(.bold)
                 
                 Spacer()
             }
