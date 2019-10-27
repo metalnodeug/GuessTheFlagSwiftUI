@@ -16,6 +16,7 @@ struct ContentView: View {
     @State private var scoreTitle = ""
     @State private var score = 0
     @State private var questionNumber = 0
+    @State private var animationAmount = 0.0
     
     func ImageFlag(content: Image) -> some View {
         content
@@ -48,6 +49,7 @@ struct ContentView: View {
                         self.ImageFlag(content: Image(self.countries[number]))
                     }
                 }
+                .rotation3DEffect(.degrees(self.animationAmount), axis: (x: 0, y: 1, z: 0))
                 Spacer()
                 
                 Text("Question number \(questionNumber) / 10")
@@ -68,6 +70,9 @@ struct ContentView: View {
         if number == correctAnswer {
             scoreTitle = "Correct"
             score += 1
+            withAnimation {
+                self.animationAmount += 360
+            }
         } else {
             scoreTitle = "Wrong! That’s the flag of \(countries[number])"
         }
