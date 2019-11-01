@@ -18,14 +18,6 @@ struct ContentView: View {
     @State private var questionNumber = 0
     @State private var animationAmount = 0.0
     
-    func ImageFlag(content: Image) -> some View {
-        content
-            .renderingMode(.original)
-            .clipShape(RoundedRectangle(cornerRadius: 3))
-            .overlay(RoundedRectangle(cornerRadius: 3).stroke(Color.black, lineWidth: 0.5))
-            .shadow(color: .black, radius: 2)
-    }
-    
     var body: some View {
         ZStack{
             LinearGradient(gradient: Gradient(colors: [.blue, .black]), startPoint: .top, endPoint: .bottom)
@@ -46,7 +38,10 @@ struct ContentView: View {
                     Button(action: {
                         self.flagTapped(number)
                     }) {
-                        self.ImageFlag(content: Image(self.countries[number]))
+                        Image(self.countries[number])
+                            .renderingMode(.original)
+                            .flagStyle()
+
                     }
                 }
                 .rotation3DEffect(.degrees(self.animationAmount), axis: (x: 0, y: 1, z: 0))
@@ -65,35 +60,70 @@ struct ContentView: View {
             }
         }
     }
-    
+
+    // Check if answer are correct or not
     func flagTapped(_ number: Int) {
         if number == correctAnswer {
             scoreTitle = "Correct"
             score += 1
-            withAnimation {
-                self.animationAmount += 360
-            }
+            correctAnimation(number: correctAnswer)
         } else {
             scoreTitle = "Wrong! That’s the flag of \(countries[number])"
         }
         
         showingScore = true
     }
-    
+
+
+    //Ask a question and choose a random element
     func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
         self.questionNumber += 1
         resetingGame()
     }
-    
+
+    // Reset the game
     func resetingGame() {
         if self.questionNumber == 11 {
             self.questionNumber = 0
             self.score = 0
         }
     }
+
+    // Use this function to create a correct animation
+    func correctAnimation(number: Int) {
+        for flag in 0...2 {
+            if flag == number {
+                withAnimation {
+                    self.animationAmount += 360
+                }
+            }
+        }
+    }
+
+    // Use this function to create a wrong animation
+    func wrongAnimation() {
+
+    }
     
+}
+
+// Creating ViewModifier Style
+struct FlagStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .clipShape(RoundedRectangle(cornerRadius: 3))
+            .overlay(RoundedRectangle(cornerRadius: 3).stroke(Color.black, lineWidth: 0.5))
+            .shadow(color: .black, radius: 2)
+    }
+}
+
+// Used an extension to use with FlagStyle ViewModifier
+extension View {
+    func flagStyle() -> some View {
+        self.modifier(FlagStyle())
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
