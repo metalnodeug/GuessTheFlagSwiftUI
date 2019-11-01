@@ -16,7 +16,8 @@ struct ContentView: View {
     @State private var scoreTitle = ""
     @State private var score = 0
     @State private var questionNumber = 0
-    @State private var animationAmount = [0.0,0.0,0.0]
+    @State private var animationAmount = [0.0, 0.0, 0.0]
+    @State private var flagOpacity = [1.0, 1.0, 1.0]
     
     var body: some View {
         ZStack{
@@ -43,7 +44,8 @@ struct ContentView: View {
                             .flagStyle()
 
                     }
-                     .rotation3DEffect(.degrees(self.animationAmount[number]), axis: (x: 0, y: 1, z: 0))
+                    .rotation3DEffect(.degrees(self.animationAmount[number]), axis: (x: 0, y: 1, z: 0))
+                    .opacity(self.flagOpacity[number])
                 }
                 Spacer()
                 
@@ -98,15 +100,11 @@ struct ContentView: View {
                 withAnimation {
                     self.animationAmount[number] += 360
                 }
+            } else {
+                self.flagOpacity[flag] = 0.5
             }
         }
     }
-
-    // Use this function to create a wrong animation
-    func wrongAnimation() {
-
-    }
-    
 }
 
 // Creating ViewModifier Style
