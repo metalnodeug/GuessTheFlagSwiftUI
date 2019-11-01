@@ -16,7 +16,7 @@ struct ContentView: View {
     @State private var scoreTitle = ""
     @State private var score = 0
     @State private var questionNumber = 0
-    @State private var animationAmount = 0.0
+    @State private var animationAmount = [0.0,0.0,0.0]
     
     var body: some View {
         ZStack{
@@ -43,8 +43,8 @@ struct ContentView: View {
                             .flagStyle()
 
                     }
+                     .rotation3DEffect(.degrees(self.animationAmount[number]), axis: (x: 0, y: 1, z: 0))
                 }
-                .rotation3DEffect(.degrees(self.animationAmount), axis: (x: 0, y: 1, z: 0))
                 Spacer()
                 
                 Text("Question number \(questionNumber) / 10")
@@ -96,7 +96,7 @@ struct ContentView: View {
         for flag in 0...2 {
             if flag == number {
                 withAnimation {
-                    self.animationAmount += 360
+                    self.animationAmount[number] += 360
                 }
             }
         }
