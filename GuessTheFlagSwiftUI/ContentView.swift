@@ -90,6 +90,8 @@ struct ContentView: View {
         if self.questionNumber == 11 {
             self.questionNumber = 0
             self.score = 0
+        } else {
+            flagOpacity = [1.0, 1.0, 1.0]
         }
     }
 
